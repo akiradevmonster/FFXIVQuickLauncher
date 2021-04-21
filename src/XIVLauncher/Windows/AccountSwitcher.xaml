@@ -1,0 +1,95 @@
+﻿<Window x:Class="XIVLauncher.Windows.AccountSwitcher"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:accounts="clr-namespace:XIVLauncher.Accounts"
+        mc:Ignorable="d"
+        Title="Account Switcher" WindowStartupLocation="CenterScreen"
+        Icon="pack://application:,,,/Resources/dalamud_icon.ico" ResizeMode="NoResize"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Medium"
+        FontFamily="pack://application:,,,/MaterialDesignThemes.Wpf;component/Resources/Roboto/#Roboto"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStyle="None" Height="400" Width="269.186" Deactivated="AccountSwitcher_OnDeactivated" Topmost="True">
+    <Grid Margin="0,0,0,0">
+        <materialDesign:Card Background="{DynamicResource MaterialDesignPaper}" Height="390" Margin="0,0,10,0">
+            <StackPanel Margin="16,16,10,0">
+                <ListView x:Name="AccountListView" MouseUp="AccountListView_OnMouseUp" MaxHeight="370">
+                    <ListView.ContextMenu>
+                        <ContextMenu Opened="AccountListViewContext_Opened" StaysOpen="true">
+                            <MenuItem Header="{Binding AccountSwitcherSetProfilePicLoc}" Click="SetProfilePicture_OnClick"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                            <MenuItem Header="{Binding AccountSwitcherCreateShortcutLoc}" Click="CreateDesktopShortcut_OnClick" Foreground="{DynamicResource MaterialDesignBody}"/>
+                            <MenuItem Header="{Binding RemoveLoc}" Click="RemoveAccount_OnClick" Foreground="{DynamicResource MaterialDesignBody}"/>
+                            <MenuItem x:Name="AccountEntrySavePasswordCheck" IsCheckable="True" Header="{Binding AccountSwitcherDontSavePasswordLoc}" Checked="DontSavePassword_OnChecked" Unchecked="DontSavePassword_OnUnchecked" Foreground="{DynamicResource MaterialDesignBody}"/>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+              <DataTemplate x:Name="SingleLineDataTemplate" DataType="accounts:AccountSwitcherEntry">
+                  <Grid>
+                      <Grid.ColumnDefinitions>
+                          <ColumnDefinition Width="Auto" />
+                          <ColumnDefinition Width="*" />
+                          <ColumnDefinition Width="Auto" />
+                      </Grid.ColumnDefinitions>
+                      <StackPanel Orientation="Horizontal" Height="42">
+                          <Image Source="{Binding ProfileImage}"></Image>
+                          <TextBlock Text="{Binding Account.UserName}" VerticalAlignment="Center" Margin="12,0,0,0" />
+                      </StackPanel>
+
+                      <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                          <materialDesign:PackIcon Height="20" Width="20"
+                                                   Margin="0,0,0,0" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center">
+                              <materialDesign:PackIcon.Style>
+                                  <Style TargetType="materialDesign:PackIcon">
+                                      <Style.Triggers>
+                                          <DataTrigger
+                                                       Binding="{Binding Account.UseSteamServiceAccount}" Value="True">
+                                              <Setter Property="Kind" Value="Steam" />
+                                          </DataTrigger>
+                                          <DataTrigger
+                                                       Binding="{Binding Account.UseSteamServiceAccount}" Value="False">
+                                              <Setter Property="Visibility" Value="Collapsed" />
+                                          </DataTrigger>
+                                      </Style.Triggers>
+                                  </Style>
+                              </materialDesign:PackIcon.Style>
+                          </materialDesign:PackIcon>
+
+                          <materialDesign:PackIcon Height="20" Width="20"
+                                                   Margin="0,0,0,0" HorizontalAlignment="Right"
+                                                   VerticalAlignment="Center">
+                              <materialDesign:PackIcon.Style>
+                                  <Style TargetType="materialDesign:PackIcon">
+                                      <Style.Triggers>
+                                          <DataTrigger
+                                              Binding="{Binding Account.UseOtp}" Value="True">
+                                              <Setter Property="Kind" Value="Key" />
+                                          </DataTrigger>
+                                          <DataTrigger
+                                              Binding="{Binding Account.UseOtp}" Value="False">
+                                              <Setter Property="Visibility" Value="Collapsed" />
+                                          </DataTrigger>
+                                      </Style.Triggers>
+                                  </Style>
+                              </materialDesign:PackIcon.Style>
+                          </materialDesign:PackIcon>
+                      </StackPanel>
+                  </Grid>
+
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
+</Window>
