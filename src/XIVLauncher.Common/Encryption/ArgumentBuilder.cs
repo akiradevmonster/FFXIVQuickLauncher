@@ -71,6 +71,13 @@ namespace XIVLauncher.Common.Encryption
                        .ToString();
         }
 
+        public ArgumentBuilder Append(IEnumerable<KeyValuePair<string, string>> items)
+        {
+            this.arguments.AddRange(items);
+
+            return this;
+        }
+
         public string BuildEncrypted(uint key)
         {
             var arguments = this.arguments.Aggregate(new StringBuilder(),
