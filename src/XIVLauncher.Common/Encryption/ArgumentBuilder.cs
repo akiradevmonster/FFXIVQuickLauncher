@@ -40,6 +40,11 @@ namespace XIVLauncher.Common.Encryption
             this.arguments = new List<KeyValuePair<string, string>>(items);
         }
 
+        public ArgumentBuilder()
+        {
+            this.arguments = new List<KeyValuePair<string, string>>();
+        }
+
         public ArgumentBuilder Append(string key, string value)
         {
             return Append(new KeyValuePair<string, string>(key, value));
