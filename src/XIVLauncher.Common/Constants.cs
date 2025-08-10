@@ -26,5 +26,21 @@ namespace XIVLauncher.Common
                     throw new ArgumentOutOfRangeException(nameof(platform), platform, null);
             }
         }
+
+        private static string GetPatcherAdminAgent(Platform platform)
+        {
+            switch (platform)
+            {
+                case Platform.Win32:
+                case Platform.Win32OnLinux:
+                    return "FFXIV PATCH ADMIN";
+
+                case Platform.Mac:
+                    return "FFXIV-MAC PATCH ADMIN";
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(platform), platform, null);
+            }
+        }
     }
 }
