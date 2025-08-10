@@ -10,11 +10,6 @@ namespace XIVLauncher.Common;
 /// </summary>
 public class ExistingProcess : Process
 {
-    public ExistingProcess(IntPtr handle)
-    {
-        SetHandle(handle);
-    }
-
     private void SetHandle(IntPtr handle)
     {
         var baseType = GetType().BaseType;
