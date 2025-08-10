@@ -46,6 +46,12 @@ namespace XIVLauncher.Common.Addon
             IsRunning = true;
         }
 
+        public class AddonEntry
+        {
+        public bool IsEnabled { get; set; }
+        public GenericAddon Addon { get; set; }
+        }
+
         public void StopAddons()
         {
             Log.Information("Stopping addons...");
