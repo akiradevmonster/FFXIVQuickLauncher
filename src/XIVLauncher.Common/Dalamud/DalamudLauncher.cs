@@ -167,5 +167,44 @@ namespace XIVLauncher.Common.Dalamud
 
             return true;
         }
+
+        public bool HoldForUpdate(DirectoryInfo gamePath)
+        {
+            Log.Information("[HOOKS] DalamudLauncher::HoldForUpdate(gp:{0})", gamePath.FullName);
+
+            if (this.updater.State != DalamudUpdater.DownloadState.Done)
+                this.updater.ShowOverlay();
+
+            while (this.updater.State != DalamudUpdater.DownloadState.Done)
+            {
+                if (this.updater.State == DalamudUpdater.DownloadState.Failed)
+                {
+                    this.updater.CloseOverlay();
+                    return false;
+                }
+
+                if (this.updater.State == DalamudUpdater.DownloadState.NoIntegrity)
+                {
+                    this.updater.CloseOverlay();
+                    throw new DalamudRunnerException("No runner integrity");
+                }
+
+                Thread.Yield();
+            }
+
+            if (!this.updater.Runner.Exists)
+                throw new DalamudRunnerException("Runner not present");
+
+            if (!ReCheckVersion(gamePath))
+            {
+                this.updater.SetOverlayProgress(IDalamudLoadingOverlay.DalamudUpdateStep.Unavailable);
+                this.updater.ShowOverlay();
+                Log.Error("[HOOKS] ReCheckVersion fail");
+
+                return false;
+            }
+
+            return true;
+        }
     }
 }
