@@ -73,6 +73,34 @@ namespace XIVLauncher.Game
                 CustomMessageBox.Show(Loc.Localize("MyGamesWriteAccessNag", "You do not have permission to write to FFXIV's My Games folder.\nThis will prevent screenshots and some character data from being saved.\n\nThis may be caused by either your antivirus or a permissions error. Please check your My Games folder permissions."), "XIVLauncher Problem", MessageBoxButton.OK, MessageBoxImage.Exclamation, parentWindow: parentWindow);
             }
 
+            if (compatFlagKey != null && !EnvironmentSettings.IsWine && !App.Settings.HasComplainedAboutAdmin.GetValueOrDefault(false))
+            {
+                var compatEntries = compatFlagKey.GetValueNames();
+
+                var entriesToFix = new Stack<string>();
+
+                foreach (var compatEntry in compatEntries)
+                {
+                    if ((compatEntry.Contains("ffxiv_dx11") || compatEntry.Contains("XIVLauncher")) && ((string) compatFlagKey.GetValue(compatEntry, string.Empty)).Contains("RUNASADMIN"))
+                        entriesToFix.Push(compatEntry);
+                }
+
+                if (entriesToFix.Count > 0)
+                {
+                    var result = CustomMessageBox.Show(Loc.Localize("AdminCheck", "XIVLauncher and/or FINAL FANTASY XIV are set to run as administrator.\nThis can cause various issues, including addons failing to launch and hotkey applications failing to respond.\n\nDo you want to fix this issue automatically?"), "XIVLauncher", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation, parentWindow: parentWindow);
+
+                    if (result != MessageBoxResult.OK)
+                        return;
+
+                    while (entriesToFix.Count > 0)
+                    {
+                        compatFlagKey.DeleteValue(entriesToFix.Pop());
+                    }
+
+                    return;
+                }
+            }
+
             if (App.Settings.GamePath == null)
                 return;
 
