@@ -23,20 +23,6 @@ namespace XIVLauncher.Accounts
 
         private readonly ILauncherSettingsV3 _setting;
 
-        public AccountManager(ILauncherSettingsV3 setting)
-        {
-            Load();
-
-            _setting = setting;
-
-            Accounts.CollectionChanged += Accounts_CollectionChanged;
-        }
-
-        private void Accounts_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            Save();
-        }
-
         public void UpdatePassword(XivAccount account, string password)
         {
             Log.Information("UpdatePassword() called");
