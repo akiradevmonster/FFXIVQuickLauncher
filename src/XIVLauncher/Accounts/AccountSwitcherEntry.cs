@@ -49,6 +49,8 @@ namespace XIVLauncher.Accounts
             bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
             bitmapImage.EndInit();
             bitmapImage.Freeze();
+            bitmapImage.StreamSource = stream;
+            bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
 
             ProfileImage = bitmapImage;
         }
