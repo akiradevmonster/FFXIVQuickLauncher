@@ -18,5 +18,10 @@ namespace XIVLauncher.Common
         {
             RoamingPath = Environment.ExpandEnvironmentVariables(path);
         }
+
+        public static void CloseRoamingPath(string path)
+        {
+            RoamingPath = Environment.ExpandEnvironmentVariables(path);
+        }
     }
 }
