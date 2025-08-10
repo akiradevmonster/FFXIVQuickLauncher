@@ -94,6 +94,12 @@ namespace XIVLauncher.Accounts
             }
         }
 
+        
+        public string ChosenCharacterName;
+        public string ChosenCharacterWorld;
+
+        public string ThumbnailUrl;
+
         private const string URL = "http://xivapi.com/";
 
         public static async Task<JObject> GetCharacterSearch(string name, string world)
